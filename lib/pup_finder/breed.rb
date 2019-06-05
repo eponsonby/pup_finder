@@ -1,5 +1,5 @@
 require 'pry'
-class PupFinder::Breed
+class Breed
     attr_accessor :name, :temperament, :size, :weight, :life_expectancy, :description, :url
     def self.small
         # go to AKC breed + size page

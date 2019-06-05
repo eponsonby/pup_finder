@@ -2,14 +2,14 @@
 require_relative 'breed'
 require 'pry'
 
-class PupFinder::CLI
+class CLI
 
     def call
         welcome
         get_input
         menu
         list_small_breeds
-        
+
     end
 
     def welcome
