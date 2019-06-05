@@ -1,16 +1,15 @@
 #This is the CLI controller
 require_relative 'breed'
-require 'pry'
+require_relative 'scraper'
 
 class CLI
 
     def call
         welcome
         user_input = get_input
-        url = generate_url(user_input).to_s
-        puts url.class
-        AKCScraper.get_page(url)
-        # menuin
+        selected_size = generate_url(user_input).join
+        AKCScraper.get_breeds(selected_size)
+        # men
         # list_small_breeds
     end
 
@@ -21,7 +20,7 @@ class CLI
     end
 
     def get_input
-        input = gets.chomp.downcase
+        input = gets.strip.downcase
     end
 
     def generate_url(input)

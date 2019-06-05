@@ -1,12 +1,8 @@
 class AKCScraper
 
-    def self.get_page(url)
+    def self.get_breeds(url)
         doc = Nokogiri::HTML(open(url))
-    end
-
-    def self.get_breeds
-        value = self.get_page.css('.breed-card-type-grid .grid-col')
-        binding.pry
+        doc.css('.breed-card-type-grid .grid-col')
     end
     
     # def make_breeds
