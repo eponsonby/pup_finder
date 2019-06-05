@@ -1,14 +1,7 @@
 class AKCScraper
-    
-    # def self.scrape_breeds
-    #     html = open("https://www.akc.org/dog-breeds/?size%5B%5D=xsmall")
-    #     doc = Nokogiri::HTML(html)
-    #     breeds = doc.css('.breed-card-type-grid .grid-col')
-    #     binding.pry
-    # end
 
-    def self.get_page
-        doc = Nokogiri::HTML(open("https://www.akc.org/dog-breeds/?size%5B%5D=xsmall"))
+    def self.get_page(url)
+        doc = Nokogiri::HTML(open(url))
     end
 
     def self.get_breeds

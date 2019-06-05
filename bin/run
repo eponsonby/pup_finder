@@ -4,5 +4,5 @@ $LOAD_PATH << './lib/pup_finder'
 
 require_relative '../config/environment'
 
-app = CLI.new
-app.run
+app = CLI.new.call
+#app.run

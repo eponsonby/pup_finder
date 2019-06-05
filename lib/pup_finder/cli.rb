@@ -6,54 +6,62 @@ class CLI
 
     def call
         welcome
-        get_input
-        menu
-        list_small_breeds
-
+        user_input = get_input
+        url = generate_url(user_input).to_s
+        puts url.class
+        AKCScraper.get_page(url)
+        # menuin
+        # list_small_breeds
     end
 
     def welcome
         puts "Welcome to PupFinder"
+        puts "What size pupper are you interested in?"
+        puts "You can say tiny, small, medium, large or huge"
     end
 
     def get_input
-        puts "What size pupper are you interested in?"
-        puts "You can say small, medium, large or huge"
-    end
-
-    def menu
         input = gets.chomp.downcase
-            case input
-            when "small"
-                #access the length of the list of dogs that are small
-                puts "There are length dogs in this list"
-                puts "Enter a letter from a-z to see all breeds by that letter"
-                letter = gets.chomp.downcase
-                # user will enter in a letter
-                # check to see if that letter is included in an array of all letters from a to z
-                # need to return a numbered list of all dogs that start with letter
-                # access all dog instances, access their breed names, access only those that start with letter 
-                    puts "Enter a number to see more info about that dog"
-                    puts "list of numbered a dogs"
-            when "medium"
-                puts "There are number dogs in this list"
-                puts "Enter a letter from a-z to see all breeds by that letter"
-                letter = gets.chomp.downcase
-            when "large"
-                puts "There are number dogs in this list"
-                puts "Enter a letter from a-z to see all breeds by that letter"
-                letter = gets.chomp.downcase
-            when "huge"
-                puts "There are number dogs in this list"
-                puts "Enter a letter from a-z to see all breeds by that letter"
-                letter = gets.chomp.downcase
-            end
     end
 
-    def list_small_breeds
-        @small_breeds = PupFinder::Breed.small
-        puts @small_breeds
+    def generate_url(input)
+        url_to_scrape = URLGenerator.new_url(input)  
     end
+
+
+    # def menu
+    #     input = gets.chomp.downcase
+    #         case input
+    #         when "small"
+    #             #access the length of the list of dogs that are small
+    #             puts "There are length dogs in this list"
+    #             puts "Enter a letter from a-z to see all breeds by that letter"
+    #             letter = gets.chomp.downcase
+    #             # user will enter in a letter
+    #             # check to see if that letter is included in an array of all letters from a to z
+    #             # need to return a numbered list of all dogs that start with letter
+    #             # access all dog instances, access their breed names, access only those that start with letter 
+    #                 puts "Enter a number to see more info about that dog"
+    #                 puts "list of numbered a dogs"
+    #         when "medium"
+    #             puts "There are number dogs in this list"
+    #             puts "Enter a letter from a-z to see all breeds by that letter"
+    #             letter = gets.chomp.downcase
+    #         when "large"
+    #             puts "There are number dogs in this list"
+    #             puts "Enter a letter from a-z to see all breeds by that letter"
+    #             letter = gets.chomp.downcase
+    #         when "huge"
+    #             puts "There are number dogs in this list"
+    #             puts "Enter a letter from a-z to see all breeds by that letter"
+    #             letter = gets.chomp.downcase
+    #         end
+    # end
+
+    # def list_small_breeds
+    #     @small_breeds = PupFinder::Breed.small
+    #     puts @small_breeds
+    # end
 
 end
 
