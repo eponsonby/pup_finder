@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH << './lib/pup_finder'
+
+require_relative '../config/environment'
+
+PupFinder::CLI.new.call
+#PupFinder::Scraper.new.get_page
