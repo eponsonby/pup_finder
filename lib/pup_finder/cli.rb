@@ -9,7 +9,6 @@ class CLI
         user_input = get_input
         selected_size = generate_url(user_input).join
         AKCScraper.get_breeds(selected_size)
-        # men
         # list_small_breeds
     end
 
