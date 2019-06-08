@@ -39,23 +39,18 @@ class CLI
 
     def options
         yes_no_or_menu = continue_gets
-
-        loop do
-            case yes_no_or_menu
-            when "yes"
+            if yes_no_or_menu == "yes"
                 second_loop
-            when "no"
-                end_program
-        break
-            when "menu"
+            elsif yes_no_or_menu == "menu"
                 intro
                 second_loop
+            elsif yes_no_or_menu == "no"
+                end_program
             else
                 puts "Please try again"
                 yes_no_or_menu = continue_gets
             end
 
-        end
     end
 
     def welcome
