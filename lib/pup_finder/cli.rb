@@ -7,12 +7,12 @@ class CLI
     attr_accessor :generated_url, :user_input, :array
 
     def call
-        first_loop
+        intro
         second_loop
     end
 
-    def first_loop
-            welcome
+    def intro
+        welcome
             @user_input = get_input
 
             if @generated_url == generate_url(user_input)
@@ -26,7 +26,7 @@ class CLI
     def second_loop # please name this better
         list = list_breeds
         enter_a_number
-        number_entered = get_number
+        number_entered = get_number(list)
         AKCScraper.make_breed(number_entered, list)
         more_info(number_entered)
         continue_message
@@ -46,15 +46,15 @@ class CLI
                 second_loop
             when "no"
                 end_program
+        break
             when "menu"
-                first_loop
+                intro
                 second_loop
             else
                 puts "Please try again"
                 yes_no_or_menu = continue_gets
             end
 
-        break if "no"
         end
     end
 
@@ -66,6 +66,12 @@ class CLI
 
     def get_input
         input = gets.strip.downcase
+        if input == "tiny"
+            input = "xsmall"
+        elsif input == "huge"
+            input = "xlarge"
+        end
+        input
     end
 
     def generate_url(input)
@@ -74,10 +80,13 @@ class CLI
     
     def list_breeds
         @array = []
-        Breed.breed_hash.each_with_index do |(key, value), index|
-            array << "#{index + 1}. #{key}" if value == @user_input
+        Breed.breed_hash.each do |key, value|
+            @array << key if value == @user_input
         end
-        puts @array
+
+        @array.each_with_index do |breed, index|
+            puts "#{index + 1}. #{breed}"
+        end
         @array
     end
 
@@ -85,11 +94,9 @@ class CLI
         puts "\n\nEnter a number to see more information about that pup \n\n"
     end
 
-    def get_number
+    def get_number(list)
         number_entered = gets.to_i
-        numbered_list = list_breeds
-        range_to_select_from = (1..numbered_list.length)
-        
+        range_to_select_from = (1..list.length)
         if number_entered == 0 || number_entered < 0 || !range_to_select_from.include?(number_entered)
             loop do
                 if number_entered == 0 || number_entered < 0
@@ -111,7 +118,6 @@ class CLI
 
     def more_info(number_entered)
         breed_to_see = @array[number_entered - 1]
-
         Breed.all.each do |breed|
             if breed.breed_name == breed_to_see
                 puts "\nThe #{breed.breed_name}\n\n"

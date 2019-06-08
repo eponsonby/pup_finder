@@ -4,8 +4,7 @@ class URLGenerator
         base_url = "https://www.akc.org/dog-breeds/"
         input = user_input
         case input
-        when "tiny"
-            input = "xsmall"
+        when "xsmall"
             new_url = base_url << "?size=#{input}"
         when "small"
             new_url = base_url << "?size=#{input}"
@@ -16,8 +15,7 @@ class URLGenerator
         when "large"
             new_url = base_url << "?size=#{input}"
             
-        when "huge"
-            input = "xlarge"
+        when "xlarge"
             new_url = base_url << "?size=#{input}"
         end
         return new_url
