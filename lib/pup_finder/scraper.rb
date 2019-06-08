@@ -42,8 +42,8 @@ class AKCScraper
     end
     
 
-    def self.make_breed(number)
-       breed_to_scrape = Breed.breed_hash.select {|item| item == number}[number]
+    def self.make_breed(number, list)
+        breed_to_scrape = list[number - 1].split(".")[1].strip
        breed_object = Breed.all.select {|breed| breed.breed_name == breed_to_scrape}
 
         doc = Nokogiri::HTML(open(breed_object[0].breed_link))
