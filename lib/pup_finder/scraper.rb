@@ -10,7 +10,7 @@ class AKCScraper
             breed_name = breed.css(".breed-type-card a h3").text
             breed_link = breed.css(".breed-type-card a").attribute('href').value
             breed_size = url.split("=")[1]
-            Breed.new(breed_name, breed_link, breed_size)
+            new_breed = Breed.new(breed_name, breed_link, breed_size)
         end
 
         # get load more link on page 1
@@ -21,8 +21,7 @@ class AKCScraper
             # get all breeds on page 2
             next_page_html = Nokogiri::HTML(open(link_text))
             next_page_breeds = next_page_html.css('.breed-card-type-grid .grid-col')
-            
-            next_page_breeds.each do |breed| # duplicate - try a do/while instead of a while
+            next_page_breeds.each do |breed|
                 breed_name = breed.css(".breed-type-card a h3").text
                 breed_link = breed.css(".breed-type-card a").attribute('href').value
                 breed_size = url.split("=")[1]

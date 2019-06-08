@@ -4,7 +4,7 @@ require_relative 'scraper'
 
 class CLI
 
-    attr_accessor :generated_url, :user_input, :array
+    attr_accessor :generated_url, :selected_size, :array, :selected_group
 
     def call
         intro
@@ -13,12 +13,13 @@ class CLI
 
     def intro
         welcome
-            @user_input = get_input
+            @selected_size = get_size
+            #@selected_group = get_group
 
-            if @generated_url == generate_url(user_input)
+            if @generated_url == generate_url(selected_size)
 
             else
-                @generated_url = generate_url(user_input)
+                @generated_url = generate_url(selected_size)
                 AKCScraper.get_breeds(@generated_url)
             end
     end
@@ -60,7 +61,7 @@ class CLI
         puts "You can say tiny, small, medium, large or huge"
     end
 
-    def get_input
+    def get_size
         sizes_to_select_from = ["tiny", "small", "medium", "large", "huge"]
         input = gets.strip.downcase
         if input == "tiny"
@@ -69,7 +70,17 @@ class CLI
             input = "xlarge"
         elsif !sizes_to_select_from.include?(input)
             puts "Please try again"
-            get_input
+            get_size
+        end
+        input
+    end
+
+    def get_group
+        groups_to_select_from = []
+        input = gets.strip.downcase
+        if !groups_to_select_from.include?(input)
+            puts "Please try again"
+            get_group
         end
         input
     end
