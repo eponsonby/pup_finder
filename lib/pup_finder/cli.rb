@@ -4,38 +4,57 @@ require_relative 'scraper'
 
 class CLI
 
-    def call
-        welcome
-        user_input = get_input
-        selected_size = generate_url(user_input).join
-        breed_scraper = AKCScraper.new
-        breed_scraper.get_breeds(selected_size)
-        breed_scraper.make_breeds
-        loop do 
-            intermediate_message
-            list_breeds
-            enter_a_number
-            number_entered = get_number
-            more_info(number_entered)
-            continue_message
-            yes_or_no = continue_gets
-                if yes_or_no == "yes"
-                    
-                elsif yes_or_no != "yes" && yes_or_no != "no"
-                    loop do
-                        if yes_or_no != "yes" && yes_or_no != "no"
-                            puts "Please try again"
-                            yes_or_no = continue_gets
-                        else 
-                            break
-                        end
-                    end
-                elsif yes_or_no == "yes"
+    attr_accessor :generated_url, :user_input
 
-                elsif yes_or_no == "no"
-                    puts "\n\nGoodbye!"
-                break
-                end
+    def call
+        first_loop
+        second_loop
+    end
+
+    def first_loop # please name this better
+            welcome
+            @user_input = get_input
+
+            if @generated_url == generate_url(user_input)
+
+            else
+                @generated_url = generate_url(user_input)
+                AKCScraper.get_breeds(@generated_url)
+            end
+    end
+
+    def second_loop # please name this better
+        list_breeds
+        enter_a_number
+        number_entered = get_number
+        AKCScraper.make_breed(number_entered)
+        more_info(number_entered)
+        continue_message
+        options
+    end
+
+    def end_program
+        puts "Goodbye!"
+    end
+
+    def options
+        yes_no_or_menu = continue_gets
+
+        loop do
+            case yes_no_or_menu
+            when "yes"
+                second_loop
+            when "no"
+                end_program
+            when "menu"
+                first_loop
+                second_loop
+            else
+                puts "Please try again"
+                yes_no_or_menu = continue_gets
+            end
+
+        break if "no"
         end
     end
 
@@ -52,23 +71,11 @@ class CLI
     def generate_url(input)
         url_to_scrape = URLGenerator.new_url(input)  
     end
-
-    def intermediate_message
-        puts "There are #{Breed.all.length} breeds in this list"
-    end
-
-    def breed_hash
-        breed_hash = {}
-        Breed.all.each_with_index do |breed, index|
-            breed_hash[index + 1] = breed.breed_name
-        end
-        breed_hash
-    end
     
     def list_breeds
-        puts "Here are the first 10 breeds. Enter next to see more"
-        breed_hash.each do |key, value|
-            puts "#{key}. #{value}"
+        #list only breeds of the size from user_input
+        Breed.breed_hash.each do |key, value, index|
+            puts "#{index + 1}. #{key}" if value == @user_input
         end
     end
 
@@ -77,31 +84,33 @@ class CLI
     end
 
     def get_number
-        number = gets.to_i
-            if number == 0
-                puts "Please try again"
-            elsif number 
-                # elsif yes_or_no != "yes" && yes_or_no != "no"
-                #     loop do
-                #         if yes_or_no != "yes" && yes_or_no != "no"
-                #             puts "Please try again"
-                #             yes_or_no = continue_gets
-                #         else 
-                #             break
-                #         end
-                #     end
-                # elsif yes_or_no == "yes"
+        number_entered = gets.to_i
+        hash = Breed.breed_hash
+        range_to_select_from = hash.collect do |key, value|
+            key
+        end
+        
+        if number_entered == 0 || number_entered < 0 || !range_to_select_from.include?(number_entered)
+            loop do
+                if number_entered == 0 || number_entered < 0
+                    puts "Please try again"
+                    number_entered = gets.to_i
+                elsif 
+                    !range_to_select_from.include?(number_entered)
+                    puts "Please enter a number between #{range_to_select_from[0]} and #{range_to_select_from[-1]}"
+                    number_entered = gets.to_i
+                else
+                    break
+                end
+            end
+        elsif number_entered
+        end
 
-                # elsif yes_or_no == "no"
-                #     puts "\n\nGoodbye!"
-                # break
-                # end
+        number_entered
     end
 
     def more_info(number_entered)
-        #if the user enters 4
-        # list more info about dog 4 name, weight, life ex, description
-        breed_to_see = breed_hash[number_entered]
+        breed_to_see = Breed.breed_hash[number_entered]
         Breed.all.each do |breed|
             if breed.breed_name == breed_to_see
                 puts "\nThe #{breed.breed_name}\n\n"
@@ -121,19 +130,7 @@ class CLI
     end
 
     def continue_gets
-        yes_or_no = gets.strip.downcase
-    end
-
-    def run_again(yes_or_no)
-        if yes_or_no == "yes"
-            list_breeds
-            enter_a_number
-            entered = get_number
-            more_info(entered)
-            continue_message
-        else
-            puts "Hope you found a pup!"
-        end
+        gets.strip.downcase
     end
 
 
