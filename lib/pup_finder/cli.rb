@@ -1,4 +1,4 @@
-#This is the CLI controller
+
 require_relative 'breed'
 require_relative 'scraper'
 
@@ -38,19 +38,20 @@ class CLI
     end
 
     def options
-        yes_no_or_menu = continue_gets
-            if yes_no_or_menu == "yes"
+            case continue_gets
+            when "yes"
                 second_loop
-            elsif yes_no_or_menu == "menu"
+            when "menu"
                 intro
                 second_loop
-            elsif yes_no_or_menu == "no"
+            when "no"
+                end_program
+            when "exit"
                 end_program
             else
                 puts "Please try again"
-                yes_no_or_menu = continue_gets
+                options
             end
-
     end
 
     def welcome
@@ -60,11 +61,15 @@ class CLI
     end
 
     def get_input
+        sizes_to_select_from = ["tiny", "small", "medium", "large", "huge"]
         input = gets.strip.downcase
         if input == "tiny"
             input = "xsmall"
         elsif input == "huge"
             input = "xlarge"
+        elsif !sizes_to_select_from.include?(input)
+            puts "Please try again"
+            get_input
         end
         input
     end
@@ -127,8 +132,8 @@ class CLI
 
     def continue_message
         puts "\nWould you like to see another pup?"
-        puts "You can enter yes or no"
-        puts "Or, you can enter menu to go back to the main menu\n\n"
+        puts "You can enter yes, no, or menu to go back to the main menu\n\n"
+        puts "Enter exit to end this program"
     end
 
     def continue_gets

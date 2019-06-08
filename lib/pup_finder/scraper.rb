@@ -4,7 +4,6 @@ class AKCScraper
         #open first url based on user input
         doc = Nokogiri::HTML(open(url))
 
-
         # get all breeds on page 1
         first_page_breeds = doc.css('.breed-card-type-grid .grid-col')
         first_page_breeds.each do |breed|
