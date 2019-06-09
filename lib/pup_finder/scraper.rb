@@ -10,7 +10,7 @@ class AKCScraper
             breed_name = breed.css(".breed-type-card a h3").text
             breed_link = breed.css(".breed-type-card a").attribute('href').value
             breed_size = url.split("=")[1]
-            new_breed = Breed.new(breed_name, breed_link, breed_size)
+            Breed.new(breed_name, breed_link, breed_size)
         end
 
         # get load more link on page 1

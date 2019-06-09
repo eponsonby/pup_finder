@@ -4,7 +4,7 @@ require_relative 'scraper'
 
 class CLI
 
-    attr_accessor :generated_url, :selected_size, :array, :selected_group
+    attr_accessor :generated_url, :selected_size, :array
 
     def call
         intro
@@ -20,7 +20,7 @@ class CLI
 
             else
                 @generated_url = generate_url(selected_size)
-                AKCScraper.get_breeds(@generated_url)
+                AKCScraper.get_breeds(generated_url)
             end
     end
 
@@ -92,7 +92,7 @@ class CLI
     def list_breeds
         @array = []
         Breed.breed_hash.each do |key, value|
-            @array << key if value == @user_input
+            @array << key if value == @selected_size
         end
 
         @array.each_with_index do |breed, index|
@@ -108,22 +108,18 @@ class CLI
     def get_number(list)
         number_entered = gets.to_i
         range_to_select_from = (1..list.length)
-        if number_entered == 0 || number_entered < 0 || !range_to_select_from.include?(number_entered)
             loop do
                 if number_entered == 0 || number_entered < 0
-                    puts "Please try again"
-                    number_entered = gets.to_i
+                    puts "Please enter a number between #{range_to_select_from[0]} #{range_to_select_from[-1]}"
+                    get_number(list)
                 elsif 
                     !range_to_select_from.include?(number_entered)
-                    puts "Please enter a number between #{range_to_select_from[0]} and #{range_to_select_from[-1]}"
-                    number_entered = gets.to_i
+                    puts "Please enter a number between #{range_to_select_from[0]} #{range_to_select_from[-1]}"
+                    get_number(list)
                 else
                     break
                 end
             end
-        elsif number_entered
-        end
-
         number_entered
     end
 
