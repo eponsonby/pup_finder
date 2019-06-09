@@ -1,8 +1,8 @@
 class URLGenerator
     
-    def self.new_url(user_input)
+    def self.new_url(selected_size)
         base_url = "https://www.akc.org/dog-breeds/"
-        input = user_input
+        input = selected_size
         case input
         when "xsmall"
             new_url = base_url << "?size=#{input}"

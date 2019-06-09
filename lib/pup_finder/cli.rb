@@ -12,8 +12,9 @@ class CLI
     end
 
     def intro
-        welcome
+        what_size
             @selected_size = get_size
+
             #@selected_group = get_group
 
             if @generated_url == generate_url(selected_size)
@@ -55,7 +56,7 @@ class CLI
             end
     end
 
-    def welcome
+    def what_size
         puts "Welcome to PupFinder"
         puts "What size pupper are you interested in?"
         puts "You can say tiny, small, medium, large or huge"
@@ -70,7 +71,7 @@ class CLI
             input = "xlarge"
         elsif !sizes_to_select_from.include?(input)
             puts "Please try again"
-            get_size
+            input = get_size
         end
         input
     end
@@ -107,19 +108,11 @@ class CLI
 
     def get_number(list)
         number_entered = gets.to_i
-        range_to_select_from = (1..list.length)
-            loop do
-                if number_entered == 0 || number_entered < 0
-                    puts "Please enter a number between #{range_to_select_from[0]} #{range_to_select_from[-1]}"
+        range_to_select_from = (1..list.length).to_a
+                if !range_to_select_from.include?(number_entered)
+                    puts "Please enter a number between #{range_to_select_from[0]} and #{range_to_select_from[-1]}"
                     get_number(list)
-                elsif 
-                    !range_to_select_from.include?(number_entered)
-                    puts "Please enter a number between #{range_to_select_from[0]} #{range_to_select_from[-1]}"
-                    get_number(list)
-                else
-                    break
                 end
-            end
         number_entered
     end
 
