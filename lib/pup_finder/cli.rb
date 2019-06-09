@@ -4,34 +4,37 @@ require_relative 'scraper'
 
 class CLI
 
-    attr_accessor :generated_url, :selected_size, :array
+    attr_accessor :generated_url, :selected_size, :array_of_breeds
 
     def call
-        intro
-        second_loop
-    end
-
-    def intro
         what_size
-        @selected_size = get_size
-        # what_group
-        # @selected_group = get_group
-
-            if @generated_url == generate_url(selected_size)
-
-            else
-                @generated_url = generate_url(selected_size)
-                AKCScraper.get_breeds(generated_url)
-                AKCScraper.get_additional_pages(generated_url)
-            end
+        select_a_size
+        please_wait
+        scrape_pages
+        get_info
     end
 
-    def second_loop # please name this better
+    def select_a_size
+        @selected_size = get_size
+    end
+
+    def scrape_pages
+
+        if @generated_url == generate_url(selected_size)
+
+        else
+            @generated_url = generate_url(selected_size)
+            AKCScraper.get_breeds(generated_url)
+            AKCScraper.get_additional_pages(generated_url)
+        end
+    end
+
+    def get_info
         list = list_breeds
         enter_a_number
-        number_entered = get_number(list)
-        AKCScraper.make_breed(number_entered, list)
-        more_info(number_entered)
+        number_to_see = get_number(list)
+        AKCScraper.make_breed(number_to_see, list)
+        more_info(number_to_see)
         continue_message
         options
     end
@@ -43,10 +46,9 @@ class CLI
     def options
             case continue_gets
             when "yes"
-                second_loop
+                get_info
             when "menu"
-                intro
-                second_loop
+                call
             when "no"
                 end_program
             when "exit"
@@ -60,7 +62,7 @@ class CLI
     def what_size
         puts "Welcome to PupFinder"
         puts "What size pupper are you interested in?"
-        puts "You can say tiny, small, medium, large or huge"
+        puts "You can say tiny, small, medium, large or huge\n\n"
     end
 
     def get_size
@@ -77,37 +79,24 @@ class CLI
         input
     end
 
-    # def what_group
-    #     puts "Great! What group are you interested in? Choose from the following list"
-    # end
 
-    # def get_group
-    #     groups_to_select_from = ["]
-    #     input = gets.strip.downcase
-    #     if input == "tiny"
-    #         input = "xsmall"
-    #     elsif input == "huge"
-    #         input = "xlarge"
-    #     elsif !sizes_to_select_from.include?(input)
-    #         puts "Please try again"
-    #         input = get_size
-    #     end
-    #     input
-    # end
     def generate_url(input)
         url_to_scrape = URLGenerator.new_url(input)  
     end
     
     def list_breeds
-        @array = []
+        @array_of_breeds = []
         Breed.breed_hash.each do |key, value|
-            @array << key if value == @selected_size
+            @array_of_breeds << key if value == @selected_size
         end
 
-        @array.each_with_index do |breed, index|
+        @array_of_breeds.each_with_index do |breed, index|
             puts "#{index + 1}. #{breed}"
         end
-        @array
+    end
+
+    def please_wait
+        puts "\nPlease wait while we load the pups!\n"
     end
 
     def enter_a_number
@@ -125,7 +114,7 @@ class CLI
     end
 
     def more_info(number_entered)
-        breed_to_see = @array[number_entered - 1]
+        breed_to_see = @array_of_breeds[number_entered - 1]
         Breed.all.each do |breed|
             if breed.breed_name == breed_to_see
                 puts "\nThe #{breed.breed_name}\n\n"
