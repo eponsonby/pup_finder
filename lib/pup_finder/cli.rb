@@ -104,13 +104,17 @@ class CLI
     end
 
     def get_number(list)
-        number_entered = gets.to_i
         range_to_select_from = (1..list.length).to_a
-                if !range_to_select_from.include?(number_entered)
-                    puts "Please enter a number between #{range_to_select_from[0]} and #{range_to_select_from[-1]}"
-                    get_number(list)
-                end
-        number_entered
+        number_entered = gets.to_i
+
+        loop do 
+            if !range_to_select_from.include?(number_entered)
+            puts "Please enter a number between #{range_to_select_from[0]} and #{range_to_select_from[-1]}"
+            number_entered = gets.to.i
+            else
+                return number_entered
+            end
+        end
     end
 
     def more_info(number_entered)
