@@ -13,15 +13,16 @@ class CLI
 
     def intro
         what_size
-            @selected_size = get_size
-
-            #@selected_group = get_group
+        @selected_size = get_size
+        # what_group
+        # @selected_group = get_group
 
             if @generated_url == generate_url(selected_size)
 
             else
                 @generated_url = generate_url(selected_size)
                 AKCScraper.get_breeds(generated_url)
+                AKCScraper.get_additional_pages(generated_url)
             end
     end
 
@@ -76,16 +77,23 @@ class CLI
         input
     end
 
-    def get_group
-        groups_to_select_from = []
-        input = gets.strip.downcase
-        if !groups_to_select_from.include?(input)
-            puts "Please try again"
-            get_group
-        end
-        input
-    end
+    # def what_group
+    #     puts "Great! What group are you interested in? Choose from the following list"
+    # end
 
+    # def get_group
+    #     groups_to_select_from = ["]
+    #     input = gets.strip.downcase
+    #     if input == "tiny"
+    #         input = "xsmall"
+    #     elsif input == "huge"
+    #         input = "xlarge"
+    #     elsif !sizes_to_select_from.include?(input)
+    #         puts "Please try again"
+    #         input = get_size
+    #     end
+    #     input
+    # end
     def generate_url(input)
         url_to_scrape = URLGenerator.new_url(input)  
     end

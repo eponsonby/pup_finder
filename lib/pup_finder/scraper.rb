@@ -1,6 +1,7 @@
 class AKCScraper
 
     def self.get_breeds(url)
+        # url is generated url based on size (page 1)
         #open first url based on user input
         doc = Nokogiri::HTML(open(url))
 
@@ -12,7 +13,10 @@ class AKCScraper
             breed_size = url.split("=")[1]
             Breed.new(breed_name, breed_link, breed_size)
         end
-
+    end
+    
+    def self.get_additional_pages(url)
+        doc = Nokogiri::HTML(open(url))
         # get load more link on page 1
         load_more_link = doc.css(".mt2 a").attribute("href")
         link_text = load_more_link.value
@@ -23,11 +27,10 @@ class AKCScraper
             next_page_breeds = next_page_html.css('.breed-card-type-grid .grid-col')
             next_page_breeds.each do |breed|
                 breed_name = breed.css(".breed-type-card a h3").text
-                breed_link = breed.css(".breed-type-card a").attribute('href').value
+                breed_link = breed.css(".breed-type-card a").attribute('href')
                 breed_size = url.split("=")[1]
                 Breed.new(breed_name, breed_link, breed_size)
             end
-
             # get load more link on page 2
             load_more_link = next_page_html.css(".mt2 a").attribute("href")
             if load_more_link
