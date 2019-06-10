@@ -1,10 +1,10 @@
 class CLI
 
-    attr_accessor :generated_url, :selected_size, :array_of_breeds
+    attr_reader :generated_url, :selected_size, :array_of_breeds
 
     def call
         what_size
-        select_a_size
+        get_size
         please_wait
         scrape_pages
         get_info
@@ -26,9 +26,9 @@ class CLI
         puts "You can say tiny, small, medium, large or huge\n\n"
     end
 
-    def select_a_size
-        @selected_size = get_size
-    end
+    # def select_a_size
+    #     @selected_size = get_size
+    # end
 
     def get_size
         sizes_to_select_from = ["tiny", "small", "medium", "large", "huge"]
@@ -43,6 +43,7 @@ class CLI
             input = get_size
         end
         
+        @selected_size = input
         return input
     end
 
@@ -55,12 +56,13 @@ class CLI
     end
     
     def scrape_pages
+        #this prevents the program from creating new breeds if they already exist
         if @generated_url == generate_url(selected_size)
-
         else
             @generated_url = generate_url(selected_size)
             AKCScraper.get_breeds(generated_url)
-            AKCScraper.get_additional_pages(generated_url)
+            Breed.all
+            binding.pry
         end
     end
 
@@ -74,6 +76,7 @@ class CLI
         @array_of_breeds.each_with_index do |breed, index|
             puts "#{index + 1}. #{breed}"
         end
+        
     end
 
     def enter_a_number
@@ -87,7 +90,7 @@ class CLI
         loop do 
             if !range_to_select_from.include?(number_entered)
                 puts "Please enter a number between #{range_to_select_from[0]} and #{range_to_select_from[-1]}"
-                number_entered = gets.to.i
+                number_entered = gets.to_i
             else
                 return number_entered
             end
