@@ -1,7 +1,3 @@
-
-require_relative 'breed'
-require_relative 'scraper'
-
 class CLI
 
     attr_accessor :generated_url, :selected_size, :array_of_breeds
@@ -14,21 +10,6 @@ class CLI
         get_info
     end
 
-    def select_a_size
-        @selected_size = get_size
-    end
-
-    def scrape_pages
-
-        if @generated_url == generate_url(selected_size)
-
-        else
-            @generated_url = generate_url(selected_size)
-            AKCScraper.get_breeds(generated_url)
-            AKCScraper.get_additional_pages(generated_url)
-        end
-    end
-
     def get_info
         list = list_breeds
         enter_a_number
@@ -39,35 +20,20 @@ class CLI
         options
     end
 
-    def end_program
-        puts "Goodbye!"
-    end
-
-    def options
-            case continue_gets
-            when "yes"
-                get_info
-            when "menu"
-                call
-            when "no"
-                end_program
-            when "exit"
-                end_program
-            else
-                puts "Please try again"
-                options
-            end
-    end
-
     def what_size
         puts "Welcome to PupFinder"
         puts "What size pupper are you interested in?"
         puts "You can say tiny, small, medium, large or huge\n\n"
     end
 
+    def select_a_size
+        @selected_size = get_size
+    end
+
     def get_size
         sizes_to_select_from = ["tiny", "small", "medium", "large", "huge"]
         input = gets.strip.downcase
+        
         if input == "tiny"
             input = "xsmall"
         elsif input == "huge"
@@ -76,27 +42,38 @@ class CLI
             puts "Please try again"
             input = get_size
         end
-        input
+        
+        return input
     end
 
+    def please_wait
+        puts "\nPlease wait while we load the pups!\n"
+    end
 
     def generate_url(input)
         url_to_scrape = URLGenerator.new_url(input)  
     end
     
+    def scrape_pages
+        if @generated_url == generate_url(selected_size)
+
+        else
+            @generated_url = generate_url(selected_size)
+            AKCScraper.get_breeds(generated_url)
+            AKCScraper.get_additional_pages(generated_url)
+        end
+    end
+
     def list_breeds
         @array_of_breeds = []
-        Breed.breed_hash.each do |key, value|
-            @array_of_breeds << key if value == @selected_size
+
+        Breed.all.each do |breed_object|
+            @array_of_breeds << breed_object.breed_name if breed_object.breed_size == selected_size
         end
 
         @array_of_breeds.each_with_index do |breed, index|
             puts "#{index + 1}. #{breed}"
         end
-    end
-
-    def please_wait
-        puts "\nPlease wait while we load the pups!\n"
     end
 
     def enter_a_number
@@ -109,8 +86,8 @@ class CLI
 
         loop do 
             if !range_to_select_from.include?(number_entered)
-            puts "Please enter a number between #{range_to_select_from[0]} and #{range_to_select_from[-1]}"
-            number_entered = gets.to.i
+                puts "Please enter a number between #{range_to_select_from[0]} and #{range_to_select_from[-1]}"
+                number_entered = gets.to.i
             else
                 return number_entered
             end
@@ -119,6 +96,7 @@ class CLI
 
     def more_info(number_entered)
         breed_to_see = @array_of_breeds[number_entered - 1]
+        
         Breed.all.each do |breed|
             if breed.breed_name == breed_to_see
                 puts "\nThe #{breed.breed_name}\n\n"
@@ -139,6 +117,26 @@ class CLI
 
     def continue_gets
         gets.strip.downcase
+    end
+
+    def options
+        case continue_gets
+            when "yes"
+                get_info
+            when "menu"
+                call
+            when "no"
+                end_program
+            when "exit"
+                end_program
+            else
+                puts "Please try again"
+                options
+        end
+    end
+    
+    def end_program
+        puts "Goodbye!"
     end
 
 

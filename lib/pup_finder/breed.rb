@@ -12,15 +12,5 @@ class Breed
     def self.all
         @@all
     end
-
-    def self.breed_hash
-        breed_hash = {}
-        self.all.each_with_index do |breed|
-            breed_hash[breed.breed_name] = breed.breed_size
-        end
-
-        breed_hash
-    end
  
-
 end
