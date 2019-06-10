@@ -9,12 +9,7 @@ class AKCScraper
         
         # get all breeds on page 1
         first_page_breeds = doc.css('.breed-card-type-grid .grid-col')
-        first_page_breeds.each do |breed|
-            breed_name = breed.css(".breed-type-card a h3").text
-            breed_link = breed.css(".breed-type-card a").attribute('href').value
-            breed_size = url.split("=")[1]
-            Breed.new(breed_name, breed_link, breed_size)
-        end
+        initial_breed_instantiation(first_page_breeds, url)
 
         # get load more link on page 1
         load_more_link = doc.css(".mt2 a").attribute("href")
@@ -24,12 +19,8 @@ class AKCScraper
             # get all breeds on page 2
             next_page_html = Nokogiri::HTML(open(link_text))
             next_page_breeds = next_page_html.css('.breed-card-type-grid .grid-col')
-            next_page_breeds.each do |breed|
-                breed_name = breed.css(".breed-type-card a h3").text
-                breed_link = breed.css(".breed-type-card a").attribute('href').value
-                breed_size = url.split("=")[1]
-                Breed.new(breed_name, breed_link, breed_size)
-            end
+            initial_breed_instantiation(next_page_breeds, url)
+            
             # get load more link on page 2
             load_more_link = next_page_html.css(".mt2 a").attribute("href")
             if load_more_link
@@ -41,6 +32,14 @@ class AKCScraper
         
     end
     
+    def self.initial_breed_instantiation(page_of_breeds, url)
+        page_of_breeds.each do |breed|
+            breed_name = breed.css(".breed-type-card a h3").text
+            breed_link = breed.css(".breed-type-card a").attribute('href').value
+            breed_size = url.split("=")[1]
+            Breed.new(breed_name, breed_link, breed_size)
+        end
+    end
 
     def self.make_breed(number, list)
         breed_to_scrape = list[number -1]

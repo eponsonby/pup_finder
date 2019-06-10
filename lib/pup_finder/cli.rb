@@ -26,10 +26,6 @@ class CLI
         puts "You can say tiny, small, medium, large or huge\n\n"
     end
 
-    # def select_a_size
-    #     @selected_size = get_size
-    # end
-
     def get_size
         sizes_to_select_from = ["tiny", "small", "medium", "large", "huge"]
         input = gets.strip.downcase
@@ -61,8 +57,6 @@ class CLI
         else
             @generated_url = generate_url(selected_size)
             AKCScraper.get_breeds(generated_url)
-            Breed.all
-            binding.pry
         end
     end
 
