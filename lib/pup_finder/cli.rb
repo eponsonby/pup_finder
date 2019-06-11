@@ -21,9 +21,22 @@ class CLI
     end
 
     def what_size
-        puts "Welcome to PupFinder!"
+        
+  puts " _____               ______ _           _"            
+  puts "|  __ \\\             |  ____(_)         | |"          
+  puts "| |__) |   _ _ __   | |__   _ _ __   __| | ___ _ __"  
+  puts "|  ___/ | | | '_ \\\  |  __| | | '_ \\\ / _` |/ _ \\\ '__|" 
+  puts "| |   | |_| | |_) | | |    | | | | | (_| |  __/ |"    
+  puts "|_|    \\\__,_| .__/  |_|    |_|_| |_|\\\__,_|\\\___|_|"  
+  puts "            | |                                  "    
+  puts "            |_|                                  "   
+
+
+
+
+        puts "\nWelcome to PupFinder!"
         puts "What size pupper are you interested in?"
-        puts "You can say tiny, small, medium, large or huge\n\n"
+        puts "You can say tiny, small, medium, large, or huge\n\n"
     end
 
     def get_size
@@ -108,7 +121,6 @@ class CLI
             end
         end
     end
-
 
 
     def continue_message
