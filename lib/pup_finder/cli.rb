@@ -1,6 +1,6 @@
 class CLI
 
-    attr_reader :generated_url, :selected_size, :array_of_breeds
+    attr_reader :generated_url, :selected_size, :breeds_list
 
     def call
         what_size
@@ -21,7 +21,7 @@ class CLI
     end
 
     def what_size
-        puts "Welcome to PupFinder"
+        puts "Welcome to PupFinder!"
         puts "What size pupper are you interested in?"
         puts "You can say tiny, small, medium, large or huge\n\n"
     end
@@ -29,7 +29,7 @@ class CLI
     def get_size
         sizes_to_select_from = ["tiny", "small", "medium", "large", "huge"]
         input = gets.strip.downcase
-        
+
         if input == "tiny"
             input = "xsmall"
         elsif input == "huge"
@@ -44,7 +44,7 @@ class CLI
     end
 
     def please_wait
-        puts "\nPlease wait while we load the pups!\n"
+        puts "\nPlease wait while we load the pups!\n\n"
     end
 
     def generate_url(input)
@@ -52,25 +52,28 @@ class CLI
     end
     
     def scrape_pages
-        #this prevents the program from creating new breeds if they already exist
+        #this prevents the program from instantiating new breeds if they already exist
         if @generated_url == generate_url(selected_size)
         else
             @generated_url = generate_url(selected_size)
-            AKCScraper.get_additional_pages_of_breeds(generated_url)
+            AKCScraper.get_all_pages_of_breeds(generated_url)
         end
     end
 
+    def find_all_breeds_by_size(size)
+        Breed.all.select {|breed_object| breed_object.breed_size == size}
+    end
+
     def list_breeds
-        @array_of_breeds = []
-
-        Breed.all.each do |breed_object|
-            @array_of_breeds << breed_object.breed_name if breed_object.breed_size == selected_size
+        @breeds_list = []
+ 
+        find_all_breeds_by_size(selected_size).each_with_index do |breed, index|
+            @breeds_list << breed.breed_name
+            puts "\u001b[36m#{index + 1}. #{breed.breed_name}\u001b[0m"
         end
 
-        @array_of_breeds.each_with_index do |breed, index|
-            puts "#{index + 1}. #{breed}"
-        end
-        
+        @breeds_list
+
     end
 
     def enter_a_number
@@ -92,24 +95,26 @@ class CLI
     end
 
     def more_info(number_entered)
-        breed_to_see = @array_of_breeds[number_entered - 1]
+        breed_to_see = @breeds_list[number_entered - 1]
         
         Breed.all.each do |breed|
             if breed.breed_name == breed_to_see
-                puts "\nThe #{breed.breed_name}\n\n"
-                puts "      __\n(___()'`;\n/,    /`\n\\\\'--\\\\"
-                puts "\nTemperament: #{breed.temperament}\n\n"
-                puts "Weight: #{breed.weight}\n\n"
-                puts "Life Expectancy: #{breed.life_expectancy}\n\n"
-                puts "Description: #{breed.description}"
+                puts "\u001b[1m\nThe #{breed.breed_name}\n\u001b[0m"
+                puts "\u001b[36;1m      __\n(___()'`;\n/,    /`\n\\\\'--\\\\\u001b[0m"
+                puts "\u001b[1m\n\nTemperament: \u001b[0m" + "\u001b[36m#{breed.temperament}\n\u001b[0m"
+                puts "\u001b[1mWeight: \u001b[0m" + "\u001b[36m#{breed.weight}\n\u001b[0m"
+                puts "\u001b[1mLife Expectancy: \u001b[0m" + "\u001b[36m#{breed.life_expectancy}\n\u001b[0m"
+                puts "\u001b[1mDescription: \u001b[0m" + "\u001b[36m#{breed.description}\n\u001b[0m"
             end
         end
     end
 
+
+
     def continue_message
         puts "\nWould you like to see another pup?"
-        puts "You can enter yes, no, or menu to go back to the main menu\n\n"
-        puts "Enter exit to end this program"
+        puts "You can enter yes, no, or menu to go back to the main menu"
+        puts "Enter exit to end this program\n\n"
     end
 
     def continue_gets
@@ -119,8 +124,10 @@ class CLI
     def options
         case continue_gets
             when "yes"
+                puts "\n"
                 get_info
             when "menu"
+                puts "\n"
                 call
             when "no"
                 end_program
@@ -133,7 +140,7 @@ class CLI
     end
     
     def end_program
-        puts "Goodbye!"
+        puts "\u001b[36m\nGoodbye!\u001b[0m"
     end
 
 

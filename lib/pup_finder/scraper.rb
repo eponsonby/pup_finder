@@ -1,6 +1,6 @@
 class AKCScraper
 
-    @@doc = nil, @@load_more_link = nil
+    @@load_more_link = nil
 
 
     def self.get_first_page_breeds(size_url)
@@ -12,14 +12,13 @@ class AKCScraper
         initial_breed_instantiation(first_page_breeds, size_url)
     
         # get load more link on page 1
-        @@load_more_link ||= doc.css(".mt2 a").attribute("href").value
+        @@load_more_link = doc.css(".mt2 a").attribute("href").value
     end
 
-    def self.get_additional_pages_of_breeds(size_url)
+    def self.get_all_pages_of_breeds(size_url)
         self.get_first_page_breeds(size_url)
 
         while @@load_more_link do
-            puts @@load_more_link
             # get all breeds on page 2
             next_page_doc = Nokogiri::HTML(open(@@load_more_link))
             next_page_breeds = next_page_doc.css('.breed-card-type-grid .grid-col')
@@ -27,8 +26,7 @@ class AKCScraper
             
             # get load more link on page 2
             @@load_more_link = next_page_doc.css(".mt2 a").attribute("href")
-        end
-        
+        end    
     end
     
     def self.initial_breed_instantiation(page_of_breeds, size_url)

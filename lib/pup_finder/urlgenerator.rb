@@ -8,19 +8,14 @@ class URLGenerator
             new_url = base_url << "?size=#{input}"
         when "small"
             new_url = base_url << "?size=#{input}"
-
         when "medium"
             new_url = base_url << "?size=#{input}"
-           
         when "large"
             new_url = base_url << "?size=#{input}"
-            
         when "xlarge"
             new_url = base_url << "?size=#{input}"
         end
         return new_url
     end
-
-
 
 end
