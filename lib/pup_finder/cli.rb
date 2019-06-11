@@ -56,7 +56,7 @@ class CLI
         if @generated_url == generate_url(selected_size)
         else
             @generated_url = generate_url(selected_size)
-            AKCScraper.get_breeds(generated_url)
+            AKCScraper.get_additional_pages_of_breeds(generated_url)
         end
     end
 
