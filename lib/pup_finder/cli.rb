@@ -4,10 +4,13 @@ class CLI
 
     def call
         what_size
-        get_size
-        please_wait
-        scrape_pages
-        get_info
+            if get_size == "exit"
+    
+            else
+                please_wait
+                scrape_pages
+                get_info
+            end
     end
 
     def get_info
@@ -44,6 +47,9 @@ class CLI
             input = "xsmall"
         elsif input == "huge"
             input = "xlarge"
+        elsif input == "exit"
+            puts "\u001b[36m\nGoodbye!\u001b[0m"
+            return "exit"
         elsif !sizes_to_select_from.include?(input)
             puts "Please try again"
             input = get_size
