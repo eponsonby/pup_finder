@@ -22,17 +22,14 @@ class CLI
 
     def what_size
         
-  puts " _____               ______ _           _"            
-  puts "|  __ \\\             |  ____(_)         | |"          
-  puts "| |__) |   _ _ __   | |__   _ _ __   __| | ___ _ __"  
-  puts "|  ___/ | | | '_ \\\  |  __| | | '_ \\\ / _` |/ _ \\\ '__|" 
-  puts "| |   | |_| | |_) | | |    | | | | | (_| |  __/ |"    
-  puts "|_|    \\\__,_| .__/  |_|    |_|_| |_|\\\__,_|\\\___|_|"  
-  puts "            | |                                  "    
-  puts "            |_|                                  "   
-
-
-
+        puts "\u001b[36m _____               ______ _           _"            
+        puts "|  __ \\\             |  ____(_)         | |"          
+        puts "| |__) |   _ _ __   | |__   _ _ __   __| | ___ _ __"  
+        puts "|  ___/ | | | '_ \\\  |  __| | | '_ \\\ / _` |/ _ \\\ '__|" 
+        puts "| |   | |_| | |_) | | |    | | | | | (_| |  __/ |"    
+        puts "|_|    \\\__,_| .__/  |_|    |_|_| |_|\\\__,_|\\\___|_|"  
+        puts "            | |                                  "    
+        puts "            |_|                                  \u001b[0m"   
 
         puts "\nWelcome to PupFinder!"
         puts "What size pupper are you interested in?"
@@ -142,17 +139,13 @@ class CLI
                 puts "\n"
                 call
             when "no"
-                end_program
+                puts "\u001b[36m\nGoodbye!\u001b[0m"
             when "exit"
-                end_program
+                puts "\u001b[36m\nGoodbye!\u001b[0m"
             else
                 puts "Please try again"
                 options
         end
-    end
-    
-    def end_program
-        puts "\u001b[36m\nGoodbye!\u001b[0m"
     end
 
 
