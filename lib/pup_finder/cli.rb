@@ -10,10 +10,9 @@ class CLI
         puts Rainbow("| |   | |_| | |_) | | |    | | | | | (_| |  __/ |").cyan    
         puts Rainbow("|_|    \\\__,_| .__/  |_|    |_|_| |_|\\\__,_|\\\___|_|").cyan  
         puts Rainbow("            | |                                  ").cyan    
-        puts Rainbow("            |_|                                  ").cyan   
-
+        puts Rainbow("            |_|                                  ").cyan
         puts "\nWelcome to PupFinder!"
-
+        
         call
     end
 
@@ -32,10 +31,14 @@ class CLI
         @list = list_breeds
         enter_a_number
         number_to_see = get_number(list)
-        AKCScraper.make_breed(number_to_see, list)
-        more_info(number_to_see)
-        continue_message
-        options
+        if number_to_see == "exit"
+            puts Rainbow("Goodbye!").cyan
+        else
+            AKCScraper.make_breed(number_to_see, list)
+            more_info(number_to_see)
+            continue_message
+            options
+        end
     end
 
     def what_size
@@ -74,6 +77,7 @@ class CLI
     def scrape_pages
         #this prevents the program from instantiating new breeds if they already exist
         if @generated_url == generate_url(selected_size)
+        
         else
             @generated_url = generate_url(selected_size)
             AKCScraper.get_all_pages_of_breeds(generated_url)
@@ -85,13 +89,13 @@ class CLI
         Breed.all.select {|breed_object| breed_object.breed_size == size}
     end
 
+
     # Returns a numbered list of all breeds by the selected size
     def list_breeds
         find_all_breeds_by_size(selected_size).map.with_index do |breed, index|
-            puts "\u001b[36m#{index + 1}. #{breed.breed_name}\u001b[0m"
+            puts Rainbow("#{index + 1}. #{breed.breed_name}").cyan
             breed.breed_name
         end
-
     end
 
     def enter_a_number
@@ -100,16 +104,20 @@ class CLI
 
     def get_number(list)
         range_to_select_from = (1..list.length).to_a
-        number_entered = gets.to_i
-
-        loop do 
-            if !range_to_select_from.include?(number_entered)
-                puts "Please enter a number between #{range_to_select_from[0]} and #{range_to_select_from[-1]}"
-                number_entered = gets.to_i
+        number_entered = gets.strip
+            if number_entered != "exit"
+                number_entered = number_entered.to_i
+                loop do 
+                    if !range_to_select_from.include?(number_entered)
+                        puts "Please enter a number between #{range_to_select_from[0]} and #{range_to_select_from[-1]}"
+                        get_number(list)
+                    else
+                        return number_entered
+                    end
+                end
             else
-                return number_entered
+                return "exit"
             end
-        end
     end
 
     def more_info(number_entered)
@@ -146,9 +154,9 @@ class CLI
                 puts "\n"
                 call
             when "no"
-                puts "\u001b[36m\nGoodbye!\u001b[0m"
+                puts Rainbow("\nGoodbye!").cyan
             when "exit"
-                puts "\u001b[36m\nGoodbye!\u001b[0m"
+                puts Rainbow("\nGoodbye!").cyan
             else
                 puts "Please try again"
                 options
