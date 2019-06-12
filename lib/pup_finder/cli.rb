@@ -25,14 +25,14 @@ class CLI
 
     def what_size
         
-        puts "\u001b[36m _____               ______ _           _"            
-        puts "|  __ \\\             |  ____(_)         | |"          
-        puts "| |__) |   _ _ __   | |__   _ _ __   __| | ___ _ __"  
-        puts "|  ___/ | | | '_ \\\  |  __| | | '_ \\\ / _` |/ _ \\\ '__|" 
-        puts "| |   | |_| | |_) | | |    | | | | | (_| |  __/ |"    
-        puts "|_|    \\\__,_| .__/  |_|    |_|_| |_|\\\__,_|\\\___|_|"  
-        puts "            | |                                  "    
-        puts "            |_|                                  \u001b[0m"   
+        puts Rainbow(" _____               ______ _           _").cyan            
+        puts Rainbow("|  __ \\\             |  ____(_)         | |").cyan     
+        puts Rainbow("| |__) |   _ _ __   | |__   _ _ __   __| | ___ _ __").cyan
+        puts Rainbow("|  ___/ | | | '_ \\\  |  __| | | '_ \\\ / _` |/ _ \\\ '__|").cyan
+        puts Rainbow("| |   | |_| | |_) | | |    | | | | | (_| |  __/ |").cyan    
+        puts Rainbow("|_|    \\\__,_| .__/  |_|    |_|_| |_|\\\__,_|\\\___|_|").cyan  
+        puts Rainbow("            | |                                  ").cyan    
+        puts Rainbow("            |_|                                  ").cyan   
 
         puts "\nWelcome to PupFinder!"
         puts "What size pupper are you interested in?"
@@ -48,7 +48,7 @@ class CLI
         elsif input == "huge"
             input = "xlarge"
         elsif input == "exit"
-            puts "\u001b[36m\nGoodbye!\u001b[0m"
+            puts Rainbow("Goodbye!").cyan
             return "exit"
         elsif !sizes_to_select_from.include?(input)
             puts "Please try again"
@@ -115,12 +115,12 @@ class CLI
         
         Breed.all.each do |breed|
             if breed.breed_name == breed_to_see
-                puts "\u001b[1m\nThe #{breed.breed_name}\n\u001b[0m"
-                puts "\u001b[36;1m      __\n(___()'`;\n/,    /`\n\\\\'--\\\\\u001b[0m"
-                puts "\u001b[1m\n\nTemperament: \u001b[0m" + "\u001b[36m#{breed.temperament}\n\u001b[0m"
-                puts "\u001b[1mWeight: \u001b[0m" + "\u001b[36m#{breed.weight}\n\u001b[0m"
-                puts "\u001b[1mLife Expectancy: \u001b[0m" + "\u001b[36m#{breed.life_expectancy}\n\u001b[0m"
-                puts "\u001b[1mDescription: \u001b[0m" + "\u001b[36m#{breed.description}\n\u001b[0m"
+                puts Rainbow("\nThe #{breed.breed_name}\n").bold
+                puts Rainbow("      __\n(___()'`;\n/,    /`\n\\\\'--\\\\\n\n").cyan.bright
+                puts Rainbow("Temperament: ").bold + Rainbow("#{breed.temperament}\n").cyan
+                puts Rainbow("Weight: ").bold + Rainbow("#{breed.weight}\n").cyan
+                puts Rainbow("Life Expectancy: ").bold + Rainbow("#{breed.life_expectancy}\n").cyan
+                puts Rainbow("Description: ").bold + Rainbow("#{breed.description}\n").cyan
             end
         end
     end
