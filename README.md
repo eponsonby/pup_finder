@@ -23,7 +23,7 @@ Or install it yourself as:
 Type the below and follow the on screen prompts.
 
 ``` ruby
-pup_finder
+$ pup_finder
 ```
 
 ## Development
