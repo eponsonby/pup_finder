@@ -1,6 +1,21 @@
 class CLI
 
-    attr_reader :generated_url, :selected_size, :breeds_list
+    attr_reader :generated_url, :selected_size, :list
+
+    def welcome
+        puts Rainbow(" _____               ______ _           _").cyan            
+        puts Rainbow("|  __ \\\             |  ____(_)         | |").cyan     
+        puts Rainbow("| |__) |   _ _ __   | |__   _ _ __   __| | ___ _ __").cyan
+        puts Rainbow("|  ___/ | | | '_ \\\  |  __| | | '_ \\\ / _` |/ _ \\\ '__|").cyan
+        puts Rainbow("| |   | |_| | |_) | | |    | | | | | (_| |  __/ |").cyan    
+        puts Rainbow("|_|    \\\__,_| .__/  |_|    |_|_| |_|\\\__,_|\\\___|_|").cyan  
+        puts Rainbow("            | |                                  ").cyan    
+        puts Rainbow("            |_|                                  ").cyan   
+
+        puts "\nWelcome to PupFinder!"
+
+        call
+    end
 
     def call
         what_size
@@ -14,7 +29,7 @@ class CLI
     end
 
     def get_info
-        list = list_breeds
+        @list = list_breeds
         enter_a_number
         number_to_see = get_number(list)
         AKCScraper.make_breed(number_to_see, list)
@@ -24,17 +39,6 @@ class CLI
     end
 
     def what_size
-        
-        puts Rainbow(" _____               ______ _           _").cyan            
-        puts Rainbow("|  __ \\\             |  ____(_)         | |").cyan     
-        puts Rainbow("| |__) |   _ _ __   | |__   _ _ __   __| | ___ _ __").cyan
-        puts Rainbow("|  ___/ | | | '_ \\\  |  __| | | '_ \\\ / _` |/ _ \\\ '__|").cyan
-        puts Rainbow("| |   | |_| | |_) | | |    | | | | | (_| |  __/ |").cyan    
-        puts Rainbow("|_|    \\\__,_| .__/  |_|    |_|_| |_|\\\__,_|\\\___|_|").cyan  
-        puts Rainbow("            | |                                  ").cyan    
-        puts Rainbow("            |_|                                  ").cyan   
-
-        puts "\nWelcome to PupFinder!"
         puts "What size pupper are you interested in?"
         puts "You can say tiny, small, medium, large, or huge\n\n"
     end
@@ -76,19 +80,17 @@ class CLI
         end
     end
 
+    # Returns an array of all breed objects (with just name, size and link attributes) that match size
     def find_all_breeds_by_size(size)
         Breed.all.select {|breed_object| breed_object.breed_size == size}
     end
 
+    # Returns a numbered list of all breeds by the selected size
     def list_breeds
-        @breeds_list = []
- 
-        find_all_breeds_by_size(selected_size).each_with_index do |breed, index|
-            @breeds_list << breed.breed_name
+        find_all_breeds_by_size(selected_size).map.with_index do |breed, index|
             puts "\u001b[36m#{index + 1}. #{breed.breed_name}\u001b[0m"
+            breed.breed_name
         end
-
-        @breeds_list
 
     end
 
@@ -111,8 +113,7 @@ class CLI
     end
 
     def more_info(number_entered)
-        breed_to_see = @breeds_list[number_entered - 1]
-        
+        breed_to_see = @list[number_entered - 1]
         Breed.all.each do |breed|
             if breed.breed_name == breed_to_see
                 puts Rainbow("\nThe #{breed.breed_name}\n").bold
