@@ -45,7 +45,7 @@ class AKCScraper
         breed_object_array = Breed.all.select {|breed| breed.breed_name == breed_to_scrape}
             
             doc = Nokogiri::HTML(open(breed_object_array[0].breed_link))
-            # get each li and set each attribute
+            # Get each li and set each attribute
             all_lis = doc.css(".panel-flex__aside ul li.attribute-list__row")
                 all_lis.each do |li|
                     if li.css(".attribute-list__term").text == "Temperament:" 
@@ -57,7 +57,7 @@ class AKCScraper
                     end
                 end
         
-            #Sets the breed description
+            # Sets the breed description
             if doc.css(".breed-hero__footer")
                 breed_object_array[0].description = doc.css(".breed-hero__footer").text.strip
             else

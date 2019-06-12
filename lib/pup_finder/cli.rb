@@ -32,7 +32,7 @@ class CLI
         enter_a_number
         number_to_see = get_number(list)
         if number_to_see == "exit"
-            puts Rainbow("Goodbye!").cyan
+            puts Rainbow("\n\nGoodbye!").cyan
         else
             AKCScraper.make_breed(number_to_see, list)
             more_info(number_to_see)
