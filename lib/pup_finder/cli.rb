@@ -11,7 +11,7 @@ class CLI
         puts Rainbow("|_|    \\\__,_| .__/  |_|    |_|_| |_|\\\__,_|\\\___|_|").cyan  
         puts Rainbow("            | |                                  ").cyan    
         puts Rainbow("            |_|                                  ").cyan
-        puts "\nWelcome to PupFinder!"
+        puts Rainbow("\nWelcome to PupFinder!").bright
         
         call
     end
@@ -19,7 +19,6 @@ class CLI
     def call
         what_size
             if get_size == "exit"
-    
             else
                 please_wait
                 scrape_pages

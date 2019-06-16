@@ -1,5 +1,5 @@
 class Breed
-    attr_accessor :breed_name, :temperament, :size, :weight, :life_expectancy, :description, :breed_link, :breed_size
+    attr_accessor :breed_name, :temperament, :weight, :life_expectancy, :description, :breed_link, :breed_size
     
     @@all = []
 

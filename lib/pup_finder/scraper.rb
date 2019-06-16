@@ -2,7 +2,6 @@ class AKCScraper
 
     @@load_more_link = nil
 
-
     def self.get_first_page_breeds(size_url)
         #open first url based on user input
         doc = Nokogiri::HTML(open(size_url))

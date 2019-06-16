@@ -1,7 +1,5 @@
 #!/usr/bin/env ruby
 
-$LOAD_PATH << './lib/pup_finder'
-
 require_relative '../config/environment'
 
-app = CLI.new.call
+app = CLI.new.welcome
