@@ -39,7 +39,7 @@ class CLI
             if !exists[0].weight
                 AKCScraper.make_breed(number_to_see, list)
             end
-            
+
         more_info(number_to_see)
         continue_message
         options
