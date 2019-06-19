@@ -18,8 +18,7 @@ class CLI
 
     def call
         what_size
-            if get_size == "exit"
-            else
+            if get_size != "exit"
                 please_wait
                 scrape_pages
                 get_info
@@ -30,13 +29,20 @@ class CLI
         @list = list_breeds
         enter_a_number
         number_to_see = get_number(list)
+        
         if number_to_see == "exit"
             puts Rainbow("\n\nGoodbye!").cyan
         else
-            AKCScraper.make_breed(number_to_see, list)
-            more_info(number_to_see)
-            continue_message
-            options
+            breed_to_scrape = list[number_to_see - 1]
+            exists = Breed.all.select {|breed_object| breed_object.breed_name == breed_to_scrape}
+            
+            if !exists[0].weight
+                AKCScraper.make_breed(number_to_see, list)
+            end
+            
+        more_info(number_to_see)
+        continue_message
+        options
         end
     end
 
@@ -106,10 +112,10 @@ class CLI
         number_entered = gets.strip
             if number_entered != "exit"
                 number_entered = number_entered.to_i
-                loop do 
+                loop do
                     if !range_to_select_from.include?(number_entered)
                         puts "Please enter a number between #{range_to_select_from[0]} and #{range_to_select_from[-1]}"
-                        get_number(list)
+                        return get_number(list)
                     else
                         return number_entered
                     end
