@@ -6,18 +6,17 @@ require "pup_finder/version"
 Gem::Specification.new do |spec|
   spec.name          = "pup_finder"
   spec.version       = PupFinder::VERSION
-  spec.authors       = ["<github username>"]
-  spec.email         = ["<github email address>"]
+  spec.authors       = ["Erin Ponsonby"]
+  spec.email         = ["erinponsonby@gmail.com"]
 
-  spec.summary       = %q{Use this gem to find a cute pup pup.}
-  #spec.description   = %q{TODO: Write a longer description or delete this line.}
+  spec.summary       = %q{A gem for browsing the American Kennel Clubs offical list of dogs.}
   spec.homepage      = "https://github.com/eponsonby/pup_finder"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
   if spec.respond_to?(:metadata)
-    spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
+    spec.metadata["allowed_push_host"] = 'https://rubygems.org/'
 
     spec.metadata["homepage_uri"] = spec.homepage
     spec.metadata["source_code_uri"] = "https://github.com/eponsonby/pup_finder"
